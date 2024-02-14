@@ -1,395 +1,490 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-
+<html>
 <head>
-
-  <title>Miao Xin's Homepage</title>
-
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Deformable Neural Radiance Fields creates free-viewpoint portraits (nerfies) from casually captured videos.">
+  <meta name="keywords" content="Nerfies, D-NeRF, NeRF">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="description" content="Miao Xin is currently a researcher at the Institute of Automation of the Chinese Academy of Sciences (CASIA)">
-  <meta name="keywords" content="Miao Xin, 辛淼, miaoxin, Miao, Xin, Deep Learning, Computer, Vision">
-  <meta name="author" content="Miao Xin" />
+  <title>Nerfies: Deformable Neural Radiance Fields</title>
 
-  <link rel="stylesheet" href="w3.css">
-
-  <style>
-  .w3-sidebar a {font-family: "Roboto", sans-serif}
-  body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
-  </style>
-
-  <link rel="icon" type="image/png" href="images/icons.png">
-  <!--
-  <script src="jquery.min.js"></script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
   <script>
-  $(document).ready(function(){
-    // Add smooth scrolling to all links
-    $("a").on('click', function(event) {
+    window.dataLayer = window.dataLayer || [];
 
-      // Make sure this.hash has a value before overriding default behavior
-      if (this.hash !== "") {
-        // Prevent default anchor click behavior
-        event.preventDefault();
+    function gtag() {
+      dataLayer.push(arguments);
+    }
 
-        // Store hash
-        var hash = this.hash;
+    gtag('js', new Date());
 
-        // Using jQuery's animate() method to add smooth page scroll
-        // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-        $('html, body').animate({
-          scrollTop: $(hash).offset().top
-        }, 800, function(){
-
-          // Add hash (#) to URL when done scrolling (default click behavior)
-          window.location.hash = hash;
-        });
-      } // End if
-    });
-  });
+    gtag('config', 'G-PYVRSFMDRL');
   </script>
-  //-->
 
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
 </head>
+<body>
 
-
-<body class="w3-content" style="max-width:1000px">
-
-<!-- Sidebar/menu -->
-<nav class="w3-sidebar w3-bar-block w3-black w3-collapse w3-top w3-right" style="z-index:3;width:150px" id="mySidebar">
-  <div class="w3-container w3-display-container w3-padding-16">
-    <h3><b>Miao Xin</b></h3>
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
   </div>
-  <div class="w3-padding-64 w3-text-light-grey w3-large" style="font-weight:bold">
-    <a href="#home" class="w3-bar-item w3-button">Home</a>
-    <a href="#news" class="w3-bar-item w3-button">News</a>
-    <a href="#projects" class="w3-bar-item w3-button">Projects</a>
-    <!-- <a href="#talks" class="w3-bar-item w3-button">Talks</a> -->
-    <a href="#publications" class="w3-bar-item w3-button">Research</a>
-    <a href="#service" class="w3-bar-item w3-button">Services</a>
-    <a href="#award" class="w3-bar-item w3-button">Awards</a>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div>
+      </div>
+    </div>
+
   </div>
 </nav>
 
-<!-- Top menu on small screens -->
-<header class="w3-bar w3-top w3-hide-large w3-black w3-xlarge">
-  <div class="w3-bar-item w3-padding-24">Miao</div>
-  <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-24 w3-right"  style="font-stretch: extra-expanded;" onclick="w3_open()"><b>≡</b></a>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Nerfies: Deformable Neural Radiance Fields</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://keunhong.com">Keunhong Park</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://utkarshsinha.com">Utkarsh Sinha</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="https://jonbarron.info">Jonathan T. Barron</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="http://sofienbouaziz.com">Sofien Bouaziz</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.danbgoldman.com">Dan B Goldman</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://homes.cs.washington.edu/~seitz/">Steven M. Seitz</a><sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="http://www.ricardomartinbrualla.com">Ricardo Martin-Brualla</a><sup>2</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>University of Washington,</span>
+            <span class="author-block"><sup>2</sup>Google Research</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2011.12948"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2011.12948"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <span class="link-block">
+                <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/google/nerfies"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href="https://github.com/google/nerfies/releases/tag/0.1"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data</span>
+                  </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</header>
+</section>
 
-<!-- Overlay effect when opening sidebar on small screens -->
-<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
-
-<!-- !PAGE CONTENT! -->
-<div class="w3-main" style="margin-left:150px">
-
-  <!-- Push down content on small screens -->
-  <div class="w3-hide-large" style="margin-top:83px"></div>
-
-<!-- The Home Section -->
-    <div class="w3-container w3-center w3-padding-32" id="home">
-      <img style="width: 60%;max-width: 240px" alt="profile photo" src="images/miao_xin.jpg">
-      <h1>Miao Xin</h1>
-        <p class="w3-justify" style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;max-width:600px">
-          I am an assistant research fellow at <a href="http://www.ia.ac.cn/">Institute of Automation, Chinese Academy of Sciences (CASIA)</a>, Beijing, where I work on deep learning, graph representation, and computer vision, etc. Before that, I did my PhD at Beihang University and Harvard University.
-        </p>
-        <p class="w3-center">
-          <a href="mailto:miao.xin@ia.ac.cn">Email</a> &nbsp/&nbsp
-          <a href="https://scholar.google.com/citations?user=gZfZZVQAAAAJ&hl=zh-CN">Google Scholar</a> &nbsp/&nbsp
-          <!-- <a href="#"> Zhi Hu </a> &nbsp/&nbsp -->
-          <!-- <a href="#"> DBLP </a> -->
-        </p>
-        </tbody></table>
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./static/videos/teaser.mp4"
+                type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">Nerfies</span> turns selfie videos from your phone into
+        free-viewpoint
+        portraits.
+      </h2>
+    </div>
   </div>
+</section>
 
-<!-- The News Section -->
-  <div class="w3-container w3-light-grey w3-padding-32" id="news">
-   <h2>News</h2>
-      <p><li> 02/2023, our paper has been accepted by IEEE TMM.</li></p>
-      <p><li> 01/2022, I won the <span style="color:red">Golden Prize</span> in the 1<sup>st</sup> <a href="https://postdocinno.gdhrss.gov.cn/web">China Postdoctoral Innovation & Entrepreneurship Competition</a>. </li></p>
-      <p><li> 10/2021, one paper has been accepted by <a href="https://2021.acmmm.org/">ACM MM 2021</a>.</li></p>
-      <p><li> 07/2021, our CVPR-W papers achieved two Workshop Best Paper Awards.</li></p>
 
-      
-      <!--
-      <p><li> 06/2020, two papers have been accepted by <a href="https://icml.cc/Conferences/2020/AcceptedPapersInitial">ICML 2020</a>.</li></p>
-      <p><li> 07/2020, one paper has been accepted by <a href="http://2020.acmmm.org/accepted-paper-id-list.txt">ACM MM 2020</a>.</li></p>
-      <p><li> 02/2020, seven papers have been accepted by <a href="http://openaccess.thecvf.com/menu.py">CVPR 2020</a>.</li></p>
-      <p><li> 01/2020, one paper has been accepted by <a href="https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=5962385">IEEE TNNLS</a>.</li></p>
-      <p><li> 11/2019, three papers have been accepted by <a href="https://aaai.org/Conferences/AAAI-20/wp-content/uploads/2020/01/AAAI-20-Accepted-Paper-List.pdf">AAAI 2020</a>.</li></p>
-      -->
-
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item item-steve">
+          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/steve.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-chair-tp">
+          <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/chair-tp.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-shiba">
+          <video poster="" id="shiba" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/shiba.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-fullbody">
+          <video poster="" id="fullbody" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/fullbody.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-blueshirt">
+          <video poster="" id="blueshirt" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/blueshirt.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-mask">
+          <video poster="" id="mask" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/mask.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-coffee">
+          <video poster="" id="coffee" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/coffee.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-toby">
+          <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/toby2.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
   </div>
-<!-- The Projects Section -->
-  <div class="w3-container w3-padding-32" id="projects">
-    <h2>Recent Projects</h2>
-    <p class="w3-justify">
-        <!-- Actually, model compression is a kind of technique for developing portable deep neural networks with lower memory and computation costs. I have done several projects in Huawei including some smartphones' applications in 2019 and 2020 (e.g. Mate 30 and Honor V30). Currently, I am leading the AdderNet project, which aims to develop a series of deep learning models using only additions (<a href="https://www.reddit.com/r/MachineLearning/comments/ekw2s1/r_addernet_do_we_really_need_multiplications_in/">Discussions on Reddit</a>). -->
-    </p>
-        
-        <h4><li>Virtual Life: Autonomous Agents in Metaverse</li></h4>
-        <img style="width:66%;" src="images/vlife.gif"> 
-        <p class="w3-justify">
-        <!--<a style="color: #447ec9" href="https://github.com/huawei-noah/AdderNet">Project Page</a> | <a style="color: #447ec9" href="https://arxiv.org/pdf/2101.10015.pdf">Hardware Implementation</a> -->
-        </p>
-        <p class="w3-justify">
-          This project aims to create 3D digital humans with autonomous behavior in the virtual world. They can live autonomously in virtual worlds, acting as the brains of service robots, and driving them to serve others (elderly and Alzheimer's patients) in real environments. We built a real indoor environment equipped with cameras, microphones, and sensors. The system continuously records all behaviors and interactions of the subjects. This information will be mapped to the virtual world environment. We employ reinforcement learning techniques to train the agents of virtual humans to predict the intentions of physical people. Our goal is to make them capable of decision-making and reasoning.
-        </p> 
-        <p class="w3-justify">
-          <em>Sponsored by</em>: National Natural Science Foundation of China (NSFC).
-        </p>
+</section>
 
-        <!-- 
-        <h4><li>GhostNet on MindSpore: SOTA Lightweight CV Networks</li></h4>
-        <img style="width:96%;" src="images/GhostNet.png"> 
-        <p class="w3-justify">
-        <a style="color: #447ec9" href="https://live.huawei.com/huaweiconnect/meeting/cn/5872.html">Huawei Connect (HC) 2020</a> | <a style="color: #447ec9" href="https://www.mindspore.cn/resources/hub">MindSpore Hub</a>
-        </p>
-        <p class="w3-justify">
-        The initial verison of GhostNet was accepted by CVPR 2020, which achieved SOTA performance on ImageNet: <span style="color:red">75.7%</span> top1 acc with only <span style="color:red">226M FLOPS</span>. In the current version, we release a series computer vision models (e.g. int8 quantization, detection, and larger networks) on <strong>MindsSpore 1.0</strong> and <strong>Mate 30 Pro (Kirin 990)</strong>.
-        </p> 
-        -->
 
-        <!-- 
-        <h4><li>AI on Ascend: Real-Time Video Style Transfer</li></h4>
-        <img style="width:32%;" src="images/atlas200.png"> &nbsp&nbsp <img style="width:60%;" src="images/video.gif">
-        <p class="w3-justify">
-        <a style="color: #447ec9" href="https://www.huaweicloud.com/intl/en-us/HDC.Cloud.html">Huawei Developer Conference (HDC) 2020</a> | <a style="color: #447ec9" href="https://developer.huaweicloud.com/exhibition/Atlas_neural_style.html">Online Demo</a>
-        </p>
-        <p class="w3-justify">
-        This project aims to develop a video style transfer system on the <strong>Huawei Atlas 200 DK AI developer Kit</strong>. The latency of the original model for processing one image is about <span style="color:red">630ms</span>. After accelerating it using our method, the lantency now is about <span style="color:red">40ms</span>. 
-        </p>  
-        -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We present the first method capable of photorealistically reconstructing a non-rigidly
+            deforming scene using photos/videos captured casually from mobile phones.
+          </p>
+          <p>
+            Our approach augments neural radiance fields
+            (NeRF) by optimizing an
+            additional continuous volumetric deformation field that warps each observed point into a
+            canonical 5D NeRF.
+            We observe that these NeRF-like deformation fields are prone to local minima, and
+            propose a coarse-to-fine optimization method for coordinate-based models that allows for
+            more robust optimization.
+            By adapting principles from geometry processing and physical simulation to NeRF-like
+            models, we propose an elastic regularization of the deformation field that further
+            improves robustness.
+          </p>
+          <p>
+            We show that <span class="dnerf">Nerfies</span> can turn casually captured selfie
+            photos/videos into deformable NeRF
+            models that allow for photorealistic renderings of the subject from arbitrary
+            viewpoints, which we dub <i>"nerfies"</i>. We evaluate our method by collecting data
+            using a
+            rig with two mobile phones that take time-synchronized photos, yielding train/validation
+            images of the same pose at different viewpoints. We show that our method faithfully
+            reconstructs non-rigidly deforming scenes and reproduces unseen views with high
+            fidelity.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
 
+    <!-- Paper video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    <!--/ Paper video. -->
   </div>
-  
-  <!-- The Talks Section 
-  <div class="w3-container w3-light-grey w3-padding-32" id="talks">
-    <h2>Talks</h2>
-      <p><li> 06/2020, "<a href="http://valser.org/webinar/slide/slides/20200603/%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9-%E5%B7%A5%E4%B8%9A%E7%95%8C%E5%92%8C%E5%AD%A6%E6%9C%AF%E7%95%8C%E7%9A%84%E5%B7%AE%E5%BC%82.pdf">AI on the Edge - Discussion on the Gap Between Industry and Academia</a>" at <a  href="http://valser.org/"><strong>VALSE</strong></a> Webinar.</li></p>
-      <p><li> 05/2020, "<a href="https://www.bilibili.com/video/av925692420/"> Edge AI: Progress and Future Directions</a>" at <a href="https://www.qbitai.com/"> <strong>QbitAI</strong></a> using <a  href="https://www.bilibili.com/"><strong>bilibili</strong></a>.</li></p>
-  </div>
-  -->
-
-  <!-- The Publications Section -->
-  <div class="w3-container w3-padding-32"" id="publications">
-    <h2>Research</h2>
-      <p class="w3-left-align" style="line-height:200%">
-        <!-- I'm interested in devleoping <strong>efficient models</strong> for computer vision (e.g. classification, detection, and super-resolution) using pruning, quantization, distilaltion, NAS, etc. -->
-      </p>
-    <!-- <h4> Conference Papers:</h4> -->
-
-    <ol>
-      
-      <p>
-      <li><strong>Tree of Uncertain Thoughts Reasoning for Large Language Models</strong>
-      <br>
-      Shentong Mo, <strong>Miao Xin<sup>*</sup></strong>
-      <br>
-      <em>arXiv.2309.07694</em>  | <a style="color: #447ec9" href="https://arxiv.org/abs/2309.07694">arXiv paper</a>
-      </p> 
-
-      <p>
-      <li><strong>BSTG-Trans: A Bayesian Spatial-Temporal Graph Transformer for Long-term Pose Forecasting</strong>
-      <br>
-      Shentong Mo, <strong>Miao Xin<sup>*</sup></strong>
-      <br>
-      <em>IEEE Transactions on Multimedia (TMM)</em> 2022 | <a style="color: #447ec9" href="https://ieeexplore.ieee.org/document/10106482/">paper</a>
-      </p> 
-
-      <p>
-      <li><strong>OsGG-Net: One-step Graph Generation Network for Unbiased Head Pose Estimation</strong>
-      <br>
-      Shentong Mo, <strong>Miao Xin<sup>*</sup></strong>
-      <br>
-      <em>ACM MM</em> 2021 | <a style="color: #447ec9" href="https://dl.acm.org/doi/pdf/10.1145/3474085.3475417">paper</a>
-      </p>                                                                                                                
-                                                                                                                                                                                                                   
-      <p>
-      <li><strong>EVA-GCN: Head Pose Estimation Based on Graph Convolutional Networks</strong>
-      <br>
-      <strong>Miao Xin<sup>*</sup></strong>, Shentong Mo, Yuanze Lin
-      <br>
-      <em>CVPR</em> 2021 Workshop | <a style="color: #447ec9" href="https://openaccess.thecvf.com/content/CVPR2021W/AMFG/papers/Xin_EVA-GCN_Head_Pose_Estimation_Based_on_Graph_Convolutional_Networks_CVPRW_2021_paper.pdf">paper</a> | <a style="color: #447ec9" href="https://sites.google.com/view/eva-gcn">project page</a>
-      <br>
-      <span style="color:red"> AMFG Workshop Best Paper </span>
-      </p>
-
-      <p>
-      <li><strong>Long-Term Head Pose Forecasting Conditioned on the Gaze-Guiding Prior</strong>
-      <br>
-      Shentong Mo, <strong>Miao Xin<sup>*</sup></strong>
-      <br>
-      <em>CVPR</em> 2021 Workshop | <a style="color: #447ec9" href="https://openaccess.thecvf.com/content/CVPR2021W/Precognition/papers/Mo_Long-Term_Head_Pose_Forecasting_Conditioned_on_the_Gaze-Guiding_Prior_CVPRW_2021_paper.pdf">paper</a> 
-      <br>
-      <span style="color:red"> Precognition Workshop Best Paper </span>
-      </p>
-
-      <p>
-      <li><strong>Entanglement Loss for Context-Based Still Image Action Recognition</strong>
-      <br>
-      <strong>Miao Xin</strong>, Shuhang Wang, Jian Cheng
-      <br>
-      <em>ICME</em> 2019 | <a style="color: #447ec9" href="https://www.researchgate.net/profile/Miao-Xin-3/publication/334327883_Entanglement_Loss_for_Context-Based_Still_Image_Action_Recognition/links/5d24ba6192851cf44074bb71/Entanglement-Loss-for-Context-Based-Still-Image-Action-Recognition.pdf">paper</a> 
-      </p>
-      
-      <p>
-      <li><strong></strong>End-to-end Temporal Attention Extraction and Human Action Recognition</strong>
-      <br>
-      Hong Zhang<sup>1</sup>, Miao Xin<sup>1</sup>, Shuhang Wang, Yifan Yang, Lei Zhang
-      <br>
-      <em>Machine Vision and Applications </em> 2018  |  <a style="color: #447ec9" href="https://www.researchgate.net/publication/326485102_End-to-end_temporal_attention_extraction_and_human_action_recognition#fullTextFileContent"> paper </a>
-      </p>
-      
-      <p>
-      <li><strong>Learning Discriminative Action and Context Representations for Action Recognition in Still Images</strong>
-      <br>
-      <strong>Miao Xin</strong>, Hong Zhang, Ding Yuan, Mingui Sun
-      <br>
-      <em>ICME</em> 2017  | <a style="color: #447ec9" href="https://www.researchgate.net/profile/Miao-Xin-3/publication/318673084_Learning_Discriminative_Action_and_Context_Representations_for_Action_Recognition_in_Still_Images/links/59e775f34585152d5f04f365/Learning-Discriminative-Action-and-Context-Representations-for-Action-Recognition-in-Still-Images.pdf">paper</a>
-      </p>
-
-      <p></p>
-      <li><strong></strong>Recurrent Temporal Sparse Autoencoder for attention-based action recognition</strong>
-      <br>
-      <strong>Miao Xin</strong>, Hong Zhang, Mingui Sun, Ding Yuan
-      <br>
-      <em>IJCNN</em> 2016  | <a style="color: #447ec9" href="https://www.researchgate.net/profile/Miao-Xin-3/publication/309775561_Recurrent_Temporal_Sparse_Autoencoder_for_attention-based_action_recognition/links/59e7776e0f7e9bed362bf6aa/Recurrent-Temporal-Sparse-Autoencoder-for-attention-based-action-recognition.pdf">paper</a>
-      </p>
-
-      <p></p>
-      <li><strong></strong>ARCH: Adaptive recurrent-convolutional hybrid networks for long-term action recognition</strong>
-      <br>
-      <strong>Miao Xin</strong>, Hong Zhang, Helong Wang, Mingui Sun, Ding Yuan
-      <br>
-      <em>Neurocomputing</em> 2016  | <a style="color: #447ec9" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5747541/pdf/nihms924285.pdf">paper</a>
-      </p>
-
-      </ol>
-
-      <!-- <h4> Journal Papers:</h4> 
-
-      <ol>
-
-      <p>
-      <li><strong>Adversarial Recurrent Time Series Imputation</strong>
-      <br>
-      Shuo Yang, Minjing Dong, <strong>Yunhe Wang</strong>, Chang Xu
-      <br>
-      <em>IEEE TNNLS</em> 2020 |<a style="color: #447ec9" href="https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9158560">paper</a>
-      </p>
-  
-      <p>
-      <li><strong>Learning Student Networks via Feature Embedding</strong>
-      <br>
-      Hanting Chen, <strong>Yunhe Wang</strong>, Chang Xu, Chao Xu, Dacheng Tao
-      <br>
-      <em>IEEE TNNLS</em> 2020 | <a style="color: #447ec9" href="https://arxiv.org/pdf/1812.06597">paper</a>
-      </p>
-
-      <p>
-      <li><strong>Packing Convolutional Neural Networks in the Frequency Domain</strong>
-      <br>
-      <strong>Yunhe Wang</strong>, Chang Xu, Chao Xu, Dacheng Tao
-      <br>
-      <em>IEEE TPAMI</em> 2018 | <a style="color: #447ec9" href="data/2018 PAMI CNNpack.pdf">paper</a>
-      </p>
-
-      <p>
-      <li><strong>DCT Regularized Extreme Visual Recovery</strong>
-      <br>
-      <strong>Yunhe Wang</strong>, Chang Xu, Shan You, Chao Xu, Dacheng Tao
-      <br>
-      <em>IEEE TIP</em> 2017 | <a style="color: #447ec9" href="data/2017 TIP DCT norm.pdf">paper</a> 
-      </p>
-
-      <p>
-      <li><strong>DCT Inspired Feature Transform for Image Retrieval and Reconstruction</strong>
-      <br>
-      <strong>Yunhe Wang</strong>, Miaojing Shi, Shan You, Chao Xu
-      <br>
-      <em>IEEE TIP</em> 2016 | <a style="color: #447ec9" href="data/2016 TIP DCT feature.pdf">paper</a>
-      </p>
-
-      </ol>
-      -->
-
-    </p>
-  </div>
-
-<!-- The Services Section -->
-  <div class="w3-container w3-light-grey w3-padding-32" id="service">
-    <h2>Services</h2>
-      <p><li> Expert group member of Chinese Association of Automation（CAA）. </p>           
-      <p><li> Co-advisor for postgraduate students of Beihang University and Hefei University of Technology. </p> 
-      <p><li> Journal Reviewers of Neurocomputing. </p>
-      <p><li> Conference Reviewers of CVPR 2022, CVPR 2021, AAAI 2021, CVPR 2020, AAAI 2020, ICME 2020, ICME 2018, etc.</p>
-  </div>
-
-  <!-- The Awards Section -->
-  <div class="w3-container w3-padding-32" id="award">
-    <h2>Awards</h2>
-    <p><li> 2022, Golden Prize in the 1st China Postdoctoral Innovation & Entrepreneurship Competition.</a></p>
-    <!-- <p><li> 2020, <a href="https://mp.weixin.qq.com/s/dORL01lgFNDHgjp3KMJmiQ">Nomination for Outstanding Youth Paper Award</a>, <a href="https://worldaic.com.cn/portal/en/aboutus.html">WAIC</a></p>  -->       
-    <!-- <p><li> 2017, <a href="https://research.google/outreach/phd-fellowship/recipients/?category=2017">Google PhD Fellowship</a></p> -->
-    <!-- <p><li> 2017, <a href="http://scholarship.baidu.com/">Baidu Scholarship</a></p> -->
-    <!-- <p><li> 2017, President's PhD Scholarship, Peking University</p> -->
-    <p><li> 2017, National Scholarship for Graduate Students</p> 
-    <!-- <p><li> 2016, National Scholarship for Graduate Students</p> -->
-  </div>  
-
-  <div class="w3-light-grey w3-center w3-padding-24">
+</section>
 
 
+<section class="section">
+  <div class="container is-max-desktop">
 
- <!-- Default Statcounter code for selfpage https://michaelxin.github.io/ -->
-<script type="text/javascript">
-  var sc_project=12707483; 
-  var sc_invisible=0; 
-  var sc_security="0e870963"; 
-  var scJsHost = "https://";
-  document.write("<sc"+"ript type='text/javascript' src='" + scJsHost+
-  "statcounter.com/counter/counter.js'></"+"script>");
-  </script>
-  <noscript><div class="statcounter"><a title="Web Analytics Made Easy -
-  Statcounter" href="https://statcounter.com/" target="_blank"><img
-  class="statcounter" src="https://c.statcounter.com/12707483/0/0e870963/0/"
-  alt="Web Analytics Made Easy - Statcounter"
-  referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
-  <!-- End of Statcounter Code -->
+    <div class="columns is-centered">
+
+      <!-- Visual Effects. -->
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">Visual Effects</h2>
+          <p>
+            Using <i>nerfies</i> you can create fun visual effects. This Dolly zoom effect
+            would be impossible without nerfies since it would require going through a wall.
+          </p>
+          <video id="dollyzoom" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/dollyzoom-stacked.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <!--/ Visual Effects. -->
+
+      <!-- Matting. -->
+      <div class="column">
+        <h2 class="title is-3">Matting</h2>
+        <div class="columns is-centered">
+          <div class="column content">
+            <p>
+              As a byproduct of our method, we can also solve the matting problem by ignoring
+              samples that fall outside of a bounding box during rendering.
+            </p>
+            <video id="matting-video" controls playsinline height="100%">
+              <source src="./static/videos/matting.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--/ Matting. -->
+
+    <!-- Animation. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Animation</h2>
+
+        <!-- Interpolating. -->
+        <h3 class="title is-4">Interpolating states</h3>
+        <div class="content has-text-justified">
+          <p>
+            We can also animate the scene by interpolating the deformation latent codes of two input
+            frames. Use the slider here to linearly interpolate between the left frame and the right
+            frame.
+          </p>
+        </div>
+        <div class="columns is-vcentered interpolation-panel">
+          <div class="column is-3 has-text-centered">
+            <img src="./static/images/interpolate_start.jpg"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+            <p>Start Frame</p>
+          </div>
+          <div class="column interpolation-video-column">
+            <div id="interpolation-image-wrapper">
+              Loading...
+            </div>
+            <input class="slider is-fullwidth is-large is-info"
+                   id="interpolation-slider"
+                   step="1" min="0" max="100" value="0" type="range">
+          </div>
+          <div class="column is-3 has-text-centered">
+            <img src="./static/images/interpolate_end.jpg"
+                 class="interpolation-image"
+                 alt="Interpolation end reference image."/>
+            <p class="is-bold">End Frame</p>
+          </div>
+        </div>
+        <br/>
+        <!--/ Interpolating. -->
+
+        <!-- Re-rendering. -->
+        <h3 class="title is-4">Re-rendering the input video</h3>
+        <div class="content has-text-justified">
+          <p>
+            Using <span class="dnerf">Nerfies</span>, you can re-render a video from a novel
+            viewpoint such as a stabilized camera by playing back the training deformations.
+          </p>
+        </div>
+        <div class="content has-text-centered">
+          <video id="replay-video"
+                 controls
+                 muted
+                 preload
+                 playsinline
+                 width="75%">
+            <source src="./static/videos/replay.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <!--/ Re-rendering. -->
+
+      </div>
+    </div>
+    <!--/ Animation. -->
+
+
+    <!-- Concurrent Work. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Related Links</h2>
+
+        <div class="content has-text-justified">
+          <p>
+            There's a lot of excellent work that was introduced around the same time as ours.
+          </p>
+          <p>
+            <a href="https://arxiv.org/abs/2104.09125">Progressive Encoding for Neural Optimization</a> introduces an idea similar to our windowed position encoding for coarse-to-fine optimization.
+          </p>
+          <p>
+            <a href="https://www.albertpumarola.com/research/D-NeRF/index.html">D-NeRF</a> and <a href="https://gvv.mpi-inf.mpg.de/projects/nonrigid_nerf/">NR-NeRF</a>
+            both use deformation fields to model non-rigid scenes.
+          </p>
+          <p>
+            Some works model videos with a NeRF by directly modulating the density, such as <a href="https://video-nerf.github.io/">Video-NeRF</a>, <a href="https://www.cs.cornell.edu/~zl548/NSFF/">NSFF</a>, and <a href="https://neural-3d-video.github.io/">DyNeRF</a>
+          </p>
+          <p>
+            There are probably many more by the time you are reading this. Check out <a href="https://dellaert.github.io/NeRF/">Frank Dellart's survey on recent NeRF papers</a>, and <a href="https://github.com/yenchenlin/awesome-NeRF">Yen-Chen Lin's curated list of NeRF papers</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Concurrent Work. -->
 
   </div>
-
-  <!-- End page content -->
-</div>
-
-<script>
-// Accordion 
-function myAccFunc() {
-  var x = document.getElementById("demoAcc");
-  if (x.className.indexOf("w3-show") == -1) {
-    x.className += " w3-show";
-  } else {
-    x.className = x.className.replace(" w3-show", "");
-  }
-}
-
-// Click on the "Jeans" link on page load to open the accordion for demo purposes
-document.getElementById("myBtn").click();
+</section>
 
 
-// Open and close sidebar
-function w3_open() {
-  document.getElementById("mySidebar").style.display = "block";
-  document.getElementById("myOverlay").style.display = "block";
-}
- 
-function w3_close() {
-  document.getElementById("mySidebar").style.display = "none";
-  document.getElementById("myOverlay").style.display = "none";
-}
-</script>
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{park2021nerfies,
+  author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
+  title     = {Nerfies: Deformable Neural Radiance Fields},
+  journal   = {ICCV},
+  year      = {2021},
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/videos/nerfies_paper.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This means you are free to borrow the <a
+              href="https://github.com/nerfies/nerfies.github.io">source code</a> of this website,
+            we just ask that you link back to this page in the footer.
+            Please remember to remove the analytics code included in the header of the website which
+            you do not want on your website.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
 
 </body>
 </html>
